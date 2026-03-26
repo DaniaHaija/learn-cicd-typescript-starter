@@ -5,6 +5,7 @@ on:
     branches: [main]
 
 jobs:
+  # المهمة الأولى: الاختبارات
   tests:
     name: Tests
     runs-on: ubuntu-latest
@@ -23,3 +24,23 @@ jobs:
 
       - name: Run tests
         run: npm run test -- --coverage
+
+  # المهمة الثانية الجديدة: التنسيق
+  style:
+    name: Style
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
