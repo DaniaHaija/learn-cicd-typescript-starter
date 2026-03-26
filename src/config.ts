@@ -1,19 +1,27 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import tseslint from "typescript-eslint";
+import dotenv from "dotenv";
+dotenv.config();
 
-export default [
-  // 1. يجب أن يكون هذا الكائن هو الأول تماماً
-  {
-    ignores: ["**/dist/**", "**/node_modules/**", "**/coverage/**"],
-  },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.recommended,
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-  },
-];
+type Config = {
+  db: DBConfig;
+  api: APIConfig;
+};
+
+type APIConfig = {
+  port: string | undefined;
+  filepathRoot: string;
+};
+
+type DBConfig = {
+  url: string | undefined;
+};
+
+export const config: Config = {
+  api: {
+    port: process.env.PORT,
+    filepathRoot: "./src/assets",
+  },
+  db: {
+    url: process.env.DATABASE_URL,
+  },
+};
+
