@@ -1,26 +1,19 @@
-import dotenv from "dotenv";
-dotenv.config();
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import { defineConfig } from "eslint/config";
+import pluginSecurity from "eslint-plugin-security";
 
-type Config = {
-  db: DBConfig;
-  api: APIConfig;
-};
-
-type APIConfig = {
-  port: string | undefined;
-  filepathRoot: string;
-};
-
-type DBConfig = {
-  url: string | undefined;
-};
-
-export const config: Config = {
-  api: {
-    port: process.env.PORT,
-    filepathRoot: "./src/assets",
+export default defineConfig([
+  {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    plugins: { js },
+    extends: ["js/recommended"],
   },
-  db: {
-    url: process.env.DATABASE_URL,
+  {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    languageOptions: { globals: globals.node },
   },
-};
+  tseslint.configs.recommended,
+  pluginSecurity.configs.recommended,
+]);
