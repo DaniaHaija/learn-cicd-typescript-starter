@@ -48,6 +48,3 @@ app.listen(config.api.port, () => {
   console.log(`Server is running on port: ${config.api.port}`);
 });
 
-function unused() {
-  // هذه الدالة لا تفعل شيئاً ولم يتم استدعاؤها في أي مكان
-}
