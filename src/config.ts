@@ -1,19 +1,13 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
-import pluginSecurity from "eslint-plugin-security";
 
-export default defineConfig([
-  {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-    plugins: { js },
-    extends: ["js/recommended"],
+
+
+const config = {
+  api: {
+    port: process.env.PORT || "8080",
+    filepathRoot: process.env.FILEPATH_ROOT || "./static",
   },
-  {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-    languageOptions: { globals: globals.node },
+  db: {
+    url: process.env.DATABASE_URL || "",
   },
-  tseslint.configs.recommended,
-  pluginSecurity.configs.recommended,
-]);
+};
+export default config;
