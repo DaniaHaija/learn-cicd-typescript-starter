@@ -1,11 +1,17 @@
-FROM --platform=linux/amd64 node:22-slim
+FROM node:22-bookworm-slim
 
+# تحديد المجلد الرئيسي داخل الحاوية
 WORKDIR /usr/src/app
 
-ADD . .
+# نسخ ملفات الإعدادات
+COPY package*.json ./
+RUN npm install
 
-RUN npm ci
+# نسخ كل ملفات المشروع (بما فيها assets و src)
+COPY . .
 
+# بناء المشروع
 RUN npm run build
 
+# تشغيل السيرفر من المجلد الصحيح
 CMD ["node", "dist/main.js"]

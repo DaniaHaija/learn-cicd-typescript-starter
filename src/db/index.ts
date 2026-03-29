@@ -1,13 +1,15 @@
 import { drizzle } from "drizzle-orm/libsql";
-import { config } from "../config.js";
+// لاحظي إضافة {} هنا مرة أخرى ولكن مع التأكد من ملف config.ts لاحقاً
+import config from "../config.js";
 import * as schema from "./schema.js";
 
-let conn = undefined;
+let conn: any = undefined;
 
-if (config.db.url) {
+// استخدام الاختيار الآمن (Optional Chaining) أو التأكيد لـ TS
+if (config && (config as any).db && (config as any).db.url) {
   conn = drizzle({
     connection: {
-      url: config.db.url,
+      url: (config as any).db.url,
     },
     schema: schema,
   });

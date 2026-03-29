@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
-import { config } from "./config.js";
+import config from "./config.js"; // تأكدي أنها بدون أقواس {}
 import { db } from "./db/index.js";
 import { middlewareAuth } from "./api/middleware.js";
 import { handlerReadiness } from "./api/readiness.js";
@@ -10,7 +10,10 @@ import { handlerUsersCreate, handlerUsersGet } from "./api/users.js";
 
 const __dirname = path.resolve();
 
-if (!config.api.port) {
+// استخدام (config as any) إذا استمر TypeScript في إظهار خطأ Property 'api' does not exist
+const apiConfig = (config as any).api;
+
+if (!apiConfig || !apiConfig.port) {
   console.error("PORT environment variable is not set");
   process.exit(1);
 }
@@ -29,7 +32,8 @@ app.use(
   }),
 );
 
-app.use("/", express.static(path.join(__dirname, config.api.filepathRoot)));
+// نحن نستخدم "static" مباشرة لأن هذا هو المجلد الافتراضي في المشروع
+app.use("/", express.static(path.join(__dirname, "assets")));
 
 const v1Router = express.Router();
 
@@ -41,9 +45,12 @@ if (db) {
 }
 
 v1Router.get("/healthz", handlerReadiness);
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Welcome to Webhook API", status: "alive" });
+});
 
 app.use("/v1", v1Router);
 
-app.listen(config.api.port, () => {
-  console.log(`Server is running on port: ${config.api.port}`);
+app.listen(apiConfig.port, () => {
+  console.log(`Server is running on port: ${apiConfig.port}`);
 });

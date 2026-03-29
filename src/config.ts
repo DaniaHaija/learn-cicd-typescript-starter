@@ -1,26 +1,13 @@
-import dotenv from "dotenv";
-dotenv.config();
 
-type Config = {
-  db: DBConfig;
-  api: APIConfig;
-};
 
-type APIConfig = {
-  port: string | undefined;
-  filepathRoot: string;
-};
 
-type DBConfig = {
-  url: string | undefined;
-};
-
-export const config: Config = {
+const config = {
   api: {
-    port: process.env.PORT,
-    filepathRoot: "./src/assets",
+    port: process.env.PORT || "8080",
+    filepathRoot: process.env.FILEPATH_ROOT || "./static",
   },
   db: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL || "",
   },
 };
+export default config;

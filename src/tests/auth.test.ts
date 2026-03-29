@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getAPIKey } from "../api/auth";
-
+import { getAPIKey } from "../api/auth.js";
 describe("getAPIKey", () => {
   // الحالة الأولى: نجاح استخراج المفتاح
   test("should return the API key when a valid Authorization header is present", () => {
