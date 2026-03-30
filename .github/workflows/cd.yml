@@ -5,20 +5,43 @@ on:
     branches: [main]
 
 jobs:
-  Deploy:
+  # 1. وظيفة الاختبار (التي كان يفتقدها النظام)
+  Tests:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test # تأكد أن هذا الأمر موجود في package.json
+
+  # 2. وظيفة النشر (تعتمد على نجاح الاختبار)
+  Deploy:
+    needs: [Tests] # هذه السطر هو الذي كان يسبب الخطأ لأنه لم يجد "Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build app
         run: npm run build
+      
+      # أضف خطوات النشر الخاصة بك هنا
