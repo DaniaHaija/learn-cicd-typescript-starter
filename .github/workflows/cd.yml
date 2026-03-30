@@ -1,11 +1,30 @@
-name: CD Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [main]
 
 jobs:
-  Deploy:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+  deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -22,4 +41,3 @@ jobs:
 
       - name: Build app
         run: npm run build
-        
