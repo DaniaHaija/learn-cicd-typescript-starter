@@ -1,9 +1,9 @@
-name: cd
+name: ci
 on:
-  push:
+  pull_request:
     branches: [main]
 jobs:
-  Deploy: # هذا الاسم مطلوب أيضاً
+  Tests: # هذا هو الاسم الذي يبحث عنه المصحح
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npm run build
+      - run: npm test # يجب أن ينجح هذا الأمر
