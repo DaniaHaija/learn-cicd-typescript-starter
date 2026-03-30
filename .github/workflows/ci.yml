@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: 20
       - run: npm install
-      - run: npm test # يجب أن ينجح هذا الأمر
+      - run: npm  run test # يجب أن ينجح هذا الأمر
